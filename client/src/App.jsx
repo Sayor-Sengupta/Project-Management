@@ -1,40 +1,34 @@
-import React from 'react'
-// import './LoginSignup.css'
-import user_icon from '../Assets/person.png'
-import email_icon from '../Assets/email.png'
-import password_icon from '../Assets/password.png'
+import { useState } from "react";
 
+import "./App.css";
+import HomePage from "./pages/HomePage";
+import Topbar from "./components/Topbar";
+import Card from "./utils/card";
+import MiddleSection from "./components/MiddleSection";
+import Sidebar from "./utils/Sidebar";
+import TaskPage from "./pages/TaskPage";
+import Chat from "./components/Chat";
+import { Route, Routes } from "react-router-dom";
 
-
-function LoginSignup() {
+function App() {
   return (
-    <div className='container'>
-      <div className='header'>
-        <div className="text">Sign Up</div>
-        <div className="underline"></div>
-      </div>
-      <div className="inputs">
-        <div className="input">
-          <img src={user_icon} alt=""/>
-          <input type="text"/>
-        </div>
-        <div className="input">
-          <img src={email_icon}alt=""/>
-          <input type="email"/>
-        </div>
-        <div className="input">
-          <img src={password_icon}alt=""/>
-          <input type="password"/>
-        </div>
-      </div>
-      <div className="forgot-password">Lost Password?<span>Click Here!</span></div>
-      <div className='submit-container'>
-        <div className='submit'>Sign Up</div>
-        <div className='submit'>Login</div>
+    <>
+        <Routes>
 
-      </div>
-    </div>
-  )
+          <Route  element={<Topbar/>}>
+            <Route path="/" element={<MiddleSection/>}/>
+            <Route path="/Project/:name" element={<TaskPage/>}/>
+
+          </Route>
+        </Routes>
+
+
+
+      
+      
+    
+    </>
+  );
 }
 
-export default LoginSignup
+export default App;
