@@ -13,10 +13,12 @@ const TaskSchema = new mongoose.Schema(
     assignedTo: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
+      required:true
     },
     dueDate: {
       type: Date,
     },
+
   },
   { timestamps: true }
 );
@@ -35,10 +37,10 @@ const ProjectSchema = new mongoose.Schema(
       ref: "User",
       required: true,
     },
-    tasks: {
+    tasks: [{
         type:mongoose.Schema.Types.ObjectId,
         ref:"Task"
-    },
+    }],
     members: [
       {
         type: mongoose.Schema.Types.ObjectId,
@@ -51,16 +53,21 @@ const ProjectSchema = new mongoose.Schema(
 
 const messageSchema = new mongoose.Schema(
   {
-    message: {
+    message:{
       type: String,
       required: true,
     },
     sender:{
         type:String,
         required:true
-    }
+    },
+    project: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Project",
+        required: true,
+      },
   },
-  {}
+  {timestamps:true}
 );
 
 const Task = mongoose.model("Task", TaskSchema);

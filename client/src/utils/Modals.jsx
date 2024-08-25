@@ -37,3 +37,8 @@ export const Modals = ({ open, setOpen }) => {
     </>
   );
 };
+
+
+<Modal>
+</Modal>
+  
