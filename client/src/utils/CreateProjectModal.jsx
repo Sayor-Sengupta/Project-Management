@@ -1,13 +1,20 @@
-import React from "react";
+import React, { useState } from "react";
 import { Button, ConfigProvider, Divider, Modal } from "antd";
 import { Link, useNavigate } from "react-router-dom";
+import axios from "axios";
 
 export const CreateProjectModals = ({ open, setOpen }) => {
     const navigate = useNavigate()
-    const handleSubmit = (e)=>{
+    const [name, setName] = useState("")
+    const handleSubmit =async (e)=>{
+
         e.preventDefault()
+        const res = await axios.post("http://localhost:3000/api/project/create",{name},{withCredentials:true})
+        console.log(res.data.name)
         setOpen(false)
-        navigate("/project/1")
+        const projectId = res.data._id
+        navigate(`/project/${projectId}`)
+        
     }
   return (
     <>
@@ -37,6 +44,8 @@ export const CreateProjectModals = ({ open, setOpen }) => {
               type="text"
               placeholder="Enter Project Name"
               className="input w-full max-w-xs  "
+              value={name}  onChange={(e)=>setName(e.target.value)}
+              
             />
            
               {" "}

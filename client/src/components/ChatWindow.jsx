@@ -9,8 +9,8 @@ const ChatWindow = ({ messages }) => {
       ) : (
         messages.map((message, index) => (
           <ChatMessage key={index} message={message} />
-        ))
-      )}
+        )))}
+
     </div>
   );
 };

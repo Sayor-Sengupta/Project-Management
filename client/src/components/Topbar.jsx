@@ -19,13 +19,13 @@ const Topbar = () => {
     // }, 2000);
   };
 
-  const showDrawer = () => {
-    setOpen(true);
+  // const showDrawer = () => {
+  //   setOpen(true);
 
-  };
-  const onClose = () => {
-    setOpen(false);
-  };
+  // };
+  // const onClose = () => {
+  //   setOpen(false);
+  // };
 
 
 
@@ -36,7 +36,7 @@ const Topbar = () => {
 
       <div className="w-full h-14 px-5 bg-green-800 flex flex-row justify-between">
         <div className=" flex flex-row gap-5 px-5 py-3">
-          <CiMenuBurger className="h-8 w-8 hover:bg-green-700 hover:rounded-full cursor-pointer p-1 text-white" onClick={showDrawer} />
+          <CiMenuBurger className="h-8 w-8 hover:bg-green-700 hover:rounded-full cursor-pointer p-1 text-white" />
           <Link to='/'><FaHome className="h-8 w-8 p-1  hover:bg-green-700 hover:rounded-full text-white" /></Link>
         </div>
 
@@ -77,7 +77,7 @@ const Topbar = () => {
         </div>
       </div>
 
-      <Drawer
+      {/* <Drawer
       title="Basic Drawer"
       placement={placement}
       closable={true}
@@ -89,7 +89,7 @@ const Topbar = () => {
 
     >
       
-    </Drawer>
+    </Drawer> */}
     <CreateProjectModals open={modalVisible} setOpen={setModalVisible} />
 
     <Outlet/>

@@ -1,8 +1,27 @@
-import React from "react";
+import axios from "axios";
+import React, { useEffect, useState } from "react";
+import {extractDateFromCreatedAt} from "../utils/extractTime"
+function Table({ projectId }) {
+  const [tasks, setTasks] = useState([]);
 
-function Table() {
+  useEffect(() => {
+    const handleChange = async (e) => {
+      console.log("projectId", projectId);
+      const res = await axios.get(
+        `http://localhost:3000/api/project/getAssignedTask/${projectId}`,{withCredentials: true}
+      );
+      setTasks(res.data.tasks);
+      console.log("res", res);
+      // console.log(extractDateFromCreatedAt(tasks[0].dueDate));
+     
+    };
+    handleChange()
+  }, []);
+        // console.log(extractDateFromCreatedAt(tasks[0].dueDate));
+
+
   return (
-    <div class="overflow-x-auto">
+    <div className="overflow-x-auto">
       <table className="table ">
         <thead>
           <tr>
@@ -14,47 +33,29 @@ function Table() {
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <th>
-              <label>
-                <input type="checkbox" class="checkbox" />
-              </label>
-            </th>
-            <td>
-              <div className="flex items-center gap-3">
-                <div>
-                  <div className="font-bold">complete the Frontend</div>
-                
-                </div>
-              </div>
-            </td>
-            <td>
-              12.2.24
-              <br />
-             
-            </td>
-            <td>Max</td>
-          </tr>
+        
 
-          <tr>
-            <th>
-              <label>
-                <input type="checkbox" className="checkbox" />
-              </label>
-            </th>
-            <td>
-              <div className="flex items-center gap-3">
-                <div>
-                  <div className="font-bold">Complete backend</div>
+          {tasks.map((task, index) => (
+            <tr key={index}>
+              <th>
+                <label>
+                  <input type="checkbox" className="checkbox" />
+                </label>
+              </th>
+              <td>
+                <div className="flex items-center gap-3">
+                  <div>
+                    <div className="font-bold">{task.title}</div>
+                  </div>
                 </div>
-              </div>
-            </td>
-            <td>
-              13.6.2069
-              <br />
-            </td>
-            <td>low</td>
-          </tr>
+              </td>
+              <td>
+                {extractDateFromCreatedAt(task.dueDate)}
+                <br />
+              </td>
+              <td>{task.importance}</td>
+            </tr>
+          ))}
         </tbody>
       </table>
     </div>

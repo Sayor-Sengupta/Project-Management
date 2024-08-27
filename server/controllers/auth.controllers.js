@@ -52,7 +52,7 @@ const login = async (req,res) => {
         const isPasswordCorrect = await bcrypt.compare(password,user?.password || "")
 
         if(!user || !isPasswordCorrect){
-            return res.status(404).json({
+            return res.status(401).json({
                 error:"invalid username or password"
             })
         }
