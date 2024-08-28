@@ -17,12 +17,24 @@ const TaskSchema = new mongoose.Schema(
     },
     dueDate: {
       type: Date,
+      required:true
     },
     project: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Project",
       required: true,
     },
+    completed:{
+      type:Boolean,
+      default:false
+      
+    },
+    completedBy: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'User',
+      default: null,
+    },
+
 
     
 

@@ -77,7 +77,7 @@ const logout =  (req,res)=>{
         res.cookie("jwt","",{maxAge:0})
         res.status(200).json({messages:"Logged out"})
     } catch (error) {
-        console.log("error in login",error.message);
+        console.log("error in logout",error.message);
         return res.status(500).json({error:"internal server error"})
     }
 

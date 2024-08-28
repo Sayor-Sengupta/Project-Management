@@ -1,9 +1,25 @@
+import mongoose from "mongoose";
 import { Message, Project, Task } from "../models/project.models.js";
 import User from "../models/user.models.js";
 
 export const createProject = async (req, res) => {
   try {
     const { name } = req.body;
+    const userId = req.user.id;
+
+    const projectCount = await Project.countDocuments({ createdBy: userId });
+
+    if (projectCount >= 3) {
+      return res
+        .status(403)
+        .json({ message: "You cannot create more than 3 projects." });
+    }
+    const search = await Project.findOne({ name });
+
+    if (search) {
+      return res.status(400).json({ message: "Project already exists" });
+    }
+
     const newProject = new Project({
       name,
       createdBy: req.user.id,
@@ -21,6 +37,8 @@ export const createProject = async (req, res) => {
 export const addMembers = async (req, res) => {
   try {
     const projectId = req.params.id;
+
+    const userId = req.user.id;
     console.log("projId", projectId);
     const { userName } = req.body;
 
@@ -28,9 +46,16 @@ export const addMembers = async (req, res) => {
 
     if (!user) {
       return res.status(404).json({ message: "User not found" });
-
     }
+    const project1 = await Project.findById(projectId);
 
+    if (project1.members.includes(user._id)) {
+      return res
+        .status(400)
+        .json({
+          message: `User ${userName} is already a member of the project`,
+        });
+    }
 
     console.log(user);
 
@@ -38,7 +63,7 @@ export const addMembers = async (req, res) => {
       projectId,
       { $addToSet: { members: user._id } },
       { new: true }
-    ).populate('members','userName');
+    ).populate("members", "userName");
     if (!project) {
       return res.status(404).json({ message: "Project not found" });
     }
@@ -73,7 +98,6 @@ export const assignTask = async (req, res) => {
     if (!user) {
       console.log("User not found");
       return res.status(404).json({ message: "User not found" });
-    
     }
 
     const task = new Task({
@@ -101,26 +125,29 @@ export const assignTask = async (req, res) => {
 };
 
 export const getAssignedTask = async (req, res) => {
-try {
+  try {
     const projectId = req.params.projectId;
-    console.log("projectId",projectId);
-    console.log("req.user.id",req.user.id);
-    const assignedTask = await Task.find({ assignedTo: req.user.id, project: projectId });
-    res.status(200).json({tasks:assignedTask});
-} catch (error) {
-  console.log(error.message);
-  res.status(500).json({ error: error.message });
-}
+    console.log("projectId", projectId);
+    console.log("req.user.id", req.user.id);
+    const assignedTask = await Task.find({
+      assignedTo: req.user.id,
+      project: projectId,
+      completed: false,
+    });
+    res.status(200).json({ tasks: assignedTask });
+  } catch (error) {
+    console.log(error.message);
+    res.status(500).json({ error: error.message });
+  }
 };
 export const getLastSixTask = async (req, res) => {
   try {
-
-    const userId = req.user.id; 
-    console
+    const userId = req.user.id;
+    console;
 
     console.log(userId);
 
-    const userProjects = await Project.find({ members: userId }).select("_id"); 
+    const userProjects = await Project.find({ members: userId }).select("_id");
     console.log(userProjects);
 
     if (userProjects.length === 0) {
@@ -130,9 +157,9 @@ export const getLastSixTask = async (req, res) => {
     }
 
     const tasks = await Task.find({ assignedTo: userId })
-    .sort({ createdAt: -1 })
-    .limit(6);
-      console.log("Tasks",tasks);
+      .sort({ createdAt: -1 })
+      .limit(6);
+    console.log("Tasks", tasks);
 
     res.status(200).json({ tasks });
   } catch (error) {
@@ -142,41 +169,43 @@ export const getLastSixTask = async (req, res) => {
 };
 
 export const getProjectsName = async (req, res) => {
-
   const userId = req.user.id;
-  const projectsName = await User.find({ _id: userId }).populate('groups', 'name').select('groups')
+  const projectsName = await User.find({ _id: userId })
+    .populate("groups", "name")
+    .select("groups");
   console.log("projectsName", projectsName);
-  res.status(200).json({projNames:projectsName});
-}
+  res.status(200).json({ projNames: projectsName });
+};
 
-export const getMembers = async(req,res)=>{
-try {
-    const projid = req.params.projectId
-  
-    const findMembers = await Project.findById({_id:projid}).populate('members','userName')
+export const getMembers = async (req, res) => {
+  try {
+    const projid = req.params.projectId;
+
+    const findMembers = await Project.findById({ _id: projid }).populate(
+      "members",
+      "userName"
+    );
     // console.log( findMembers.members.map(member=> member._id));
-    
-  
+
     console.log(findMembers);
-    if(!findMembers){
-        return res.status(404).json({message:"No project found with this id"})
+    if (!findMembers) {
+      return res.status(404).json({ message: "No project found with this id" });
     }
-  
-    res.status(201).json({members:findMembers.members})
-} catch (error) {
+
+    res
+      .status(201)
+      .json({ members: findMembers.members, creator: findMembers.createdBy });
+  } catch (error) {
     res.status(400).json({ error: error.message });
     console.log(error.message);
-  
-}
-
-
-}
+  }
+};
 export const sendMessages = async (req, res) => {
   try {
     const { projectId } = req.params;
     const { message } = req.body;
 
-    console.log("userName",req.user.userName);
+    console.log("userName", req.user.userName);
 
     const newMessage = new Message({
       message,
@@ -186,7 +215,7 @@ export const sendMessages = async (req, res) => {
 
     await newMessage.save();
 
-    res.status(201).json({message:newMessage});
+    res.status(201).json({ message: newMessage });
   } catch (err) {
     res.status(400).json({ error: err.message });
     console.log(err.message);
@@ -201,10 +230,81 @@ export const getMessages = async (req, res) => {
         .populate("sender", "userName fullName")
         .sort({ createdAt: 1 });
 
-      res.status(200).json({messages:messages});
+      res.status(200).json({ messages: messages });
     } catch (err) {
       res.status(400).json({ error: err.message });
       console.log(err.message);
     }
   }
 };
+export const getCreatedProjects = async (req, res) => {
+  try {
+    const userId = req.user.id;
+    const projects = await Project.find({ createdBy: userId }).select("name");
+    console.log("projects", projects);
+    res.status(200).json({ projects });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+    console.log(error.message);
+  }
+};
+// export const getCompletedTasks = async (req, res) => {
+//   try {
+//     const { projectId } = req.params;
+//     const tasks = await Task.find({ project: projectId, completed: true })
+//       .populate("assignedTo", "userName")
+//       .sort({ createdAt: -1 });
+//     res.status(200).json({ tasks });
+//   } catch (error) {
+//     res.status(500).json({ error: error.message });
+//     console.log(error.message);
+//   }
+// };
+
+export const setCompletedTasks = async (req, res) => {
+  const { taskId } = req.params;
+  const userId = req.user.id; // Assuming you have middleware that adds the user's ID to `req.user`
+
+  try {
+    // Find the task and mark it as completed
+    const task = await Task.findById(taskId);
+    if (!task) {
+      return res.status(404).json({ message: "Task not found" });
+    }
+
+    if (task.completed) {
+      return res.status(400).json({ message: "Task is already completed" });
+    }
+
+    task.completed = true;
+    task.completedBy = userId;
+    await task.save();
+
+    res.status(200).json({ message: "Task marked as completed" });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
+export const getCompletedTasks = async (req, res) => {
+  const  { projectId }  = req.params;
+  console.log("projectId",projectId, typeof projectId);
+
+  try {
+    
+    const completedTasks = await Task.find({  project: new mongoose.Types.ObjectId(projectId), completed: true })
+      .populate("completedBy", " userName")
+      .select("title dueDate completedBy"); 
+
+    res.status(200).json({ completedTasks });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
+
+
+
+
+
+

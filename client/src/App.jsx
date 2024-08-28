@@ -1,36 +1,40 @@
 import { useState } from "react";
-
 import "./App.css";
 import HomePage from "./pages/HomePage";
 import Topbar from "./components/Topbar";
-import Card from "./utils/card";
-import MiddleSection from "./components/MiddleSection";
-import Sidebar from "./utils/Sidebar";
 import TaskPage from "./pages/TaskPage";
-import Chat from "./components/Chat";
-import { Navigate, Route, Routes } from "react-router-dom";
 import LoginForm from "./pages/Login";
+import Signup from "./pages/Signup";
 import { useAuthStore } from "./zustand/useAuth";
+import { Toaster } from "react-hot-toast";
+import { Navigate, Route, Routes } from "react-router-dom";
 
 function App() {
-  const {authUser} = useAuthStore()
+  const { authUser } = useAuthStore();
+
   return (
     <>
-        <Routes>
+      <Routes>
+        <Route
+          path="/login"
+          element={authUser ? <Navigate to="/" /> : <LoginForm />}
+        />
 
-          <Route  element={<Topbar/>}>
-            <Route path="/" element={authUser?<HomePage/>:  <Navigate to="/login"/>}/>
-            <Route path="/login" element={authUser?<Navigate to="/"/>:<LoginForm/>}/>
-            <Route path="/Project/:projectId" element={<TaskPage/>}/>
+        <Route
+          path="/signup"
+          element={authUser ? <Navigate to="/" /> : <Signup />}
+        />
 
+        {authUser && (
+          <Route element={<Topbar />}>
+            <Route path="/" element={<HomePage />} />
+            <Route path="/Project/:projectId" element={<TaskPage />} />
           </Route>
-        </Routes>
+        )}
 
-
-
-      
-      
-    
+        {!authUser && <Route path="" element={<Navigate to="/login" />} />}
+      </Routes>
+      <Toaster />
     </>
   );
 }

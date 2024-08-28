@@ -5,8 +5,11 @@ import cors from "cors"
 import { connectMongoDb } from "./connectToMongodb.js";
 import authRoutes from './routes/userRoutes.js'
 import taskRoutes from './routes/taskRoutes.js'
+import { createServer } from 'node:http';
+
 
 const app = express();
+const server = createServer(app);
 dotenv.config();
 const PORT = process.env.PORT || 3000;
 

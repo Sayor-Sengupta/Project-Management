@@ -11,14 +11,21 @@ function Table({ projectId }) {
         `http://localhost:3000/api/project/getAssignedTask/${projectId}`,{withCredentials: true}
       );
       setTasks(res.data.tasks);
-      console.log("res", res);
+      console.log("res1", res.data);
       // console.log(extractDateFromCreatedAt(tasks[0].dueDate));
      
     };
     handleChange()
-  }, []);
+  }, [projectId]);
         // console.log(extractDateFromCreatedAt(tasks[0].dueDate));
-
+  const handleTaskComplete= async (taskId)=>{
+    try {
+      await axios.post(`http://localhost:3000/api/project/setCompletedTasks/${taskId}`,{},{withCredentials: true});
+      setTasks((prevTasks)=> prevTasks.filter(task=> task._id !== taskId))
+    } catch (error) {
+      console.log(error.message);
+    }
+  }
 
   return (
     <div className="overflow-x-auto">
@@ -35,11 +42,15 @@ function Table({ projectId }) {
         <tbody>
         
 
-          {tasks.map((task, index) => (
+        {tasks.map((task, index) => (
             <tr key={index}>
               <th>
                 <label>
-                  <input type="checkbox" className="checkbox" />
+                  <input
+                    type="checkbox"
+                    className="checkbox"
+                    onChange={() => handleTaskComplete(task._id)}
+                  />
                 </label>
               </th>
               <td>
@@ -49,10 +60,7 @@ function Table({ projectId }) {
                   </div>
                 </div>
               </td>
-              <td>
-                {extractDateFromCreatedAt(task.dueDate)}
-                <br />
-              </td>
+              <td>{extractDateFromCreatedAt(task.dueDate)}</td>
               <td>{task.importance}</td>
             </tr>
           ))}

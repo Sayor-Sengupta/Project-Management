@@ -6,4 +6,5 @@ export const useAuthStore = create((set) => ({
         localStorage.setItem("authUser", JSON.stringify(user));
         set({ authUser: user });
     },
+    logoutUser: () => set({ authUser: null })
 }));

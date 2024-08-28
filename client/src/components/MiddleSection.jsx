@@ -7,9 +7,11 @@ import { Modals } from "../utils/Modals.jsx";
 import { useAuthStore } from "../zustand/useAuth.js";
 import axios from "axios";
 import { extractDateFromCreatedAt } from "../utils/extractTime";
+import { ProjectCreatedModal } from "../utils/ProjectCreatedModal.jsx";
 
 const MiddleSection = ()=>{
   const [modalVisible, setModalVisible] = useState(false);
+  const [modalVisible1, setModalVisible1] = useState(false);
   const { authUser } = useAuthStore();
   const [tasks, setTasks] = useState([]);
 
@@ -27,11 +29,17 @@ const MiddleSection = ()=>{
   console.log("tasks", tasks);
 
 
+  
+
+
 
   
 
   const showLoading = () => {
     setModalVisible(true);
+  };
+  const showLoading1 = () => {
+    setModalVisible1(true);
   };
 
   return (
@@ -42,7 +50,7 @@ const MiddleSection = ()=>{
         </div>
 
         <div className="flex flex-row">
-          <Card text="Your Projects" icon={<UserGroupIcon className="h-10 text-green-500" />} />
+          <Card text="Your Projects" icon={<UserGroupIcon className="h-10 text-green-500" />} onClick={showLoading1} />
           <Card
             text="Projects"
             icon={<AiOutlineThunderbolt className="size-10 text-green-600 " />}
@@ -67,6 +75,7 @@ const MiddleSection = ()=>{
         </div>
 
         <Modals open={modalVisible} setOpen={setModalVisible} />
+        <ProjectCreatedModal open={modalVisible1} setOpen={setModalVisible1} />
       </div>
     </>
   );
