@@ -6,6 +6,8 @@ import { AddTaskModal } from "../utils/AssignTaskModals";
 import axios from "axios";
 import { useAuthStore } from "../zustand/useAuth";
 import { CompletedTable } from "../utils/CompletedTable";
+import io from "socket.io-client"
+const socket = io("http://localhost:3000");
 
 const Members = ({ projectId }) => {
   const [members, setMembers] = useState([]);
@@ -35,10 +37,19 @@ const Members = ({ projectId }) => {
 
   useEffect(() => {
     fetchMembers();
+    socket.on("memberAdded",(projectId)=>{
+      fetchMembers()
+
+    })
+    return ()=>{
+      socket.off("memberAdded")
+    }
+
   }, [projectId]);
 
   const handleModalSuccess = () => {
     fetchMembers();
+    socket.emit("addMembers", projectId);
   };
 
   const showLoading = () => {

@@ -5,11 +5,11 @@ import cors from "cors"
 import { connectMongoDb } from "./connectToMongodb.js";
 import authRoutes from './routes/userRoutes.js'
 import taskRoutes from './routes/taskRoutes.js'
-import { createServer } from 'node:http';
+import { app ,server,io} from "./utils/socketIo.js";
 
 
-const app = express();
-const server = createServer(app);
+
+
 dotenv.config();
 const PORT = process.env.PORT || 3000;
 
@@ -20,7 +20,8 @@ app.use('/api/users',authRoutes)
 app.use('/api/project',taskRoutes)
 
 
-app.listen(PORT,()=>{
+server.listen(PORT,()=>{
     connectMongoDb()
     console.log(`server is running ${PORT}`);
-})
+}) 
+

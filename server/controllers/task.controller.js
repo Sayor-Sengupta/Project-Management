@@ -205,7 +205,7 @@ export const sendMessages = async (req, res) => {
     const { projectId } = req.params;
     const { message } = req.body;
 
-    console.log("userName", req.user.userName);
+    // console.log("userName", req.user.userName);
 
     const newMessage = new Message({
       message,
@@ -263,10 +263,9 @@ export const getCreatedProjects = async (req, res) => {
 
 export const setCompletedTasks = async (req, res) => {
   const { taskId } = req.params;
-  const userId = req.user.id; // Assuming you have middleware that adds the user's ID to `req.user`
+  const userId = req.user.id; 
 
   try {
-    // Find the task and mark it as completed
     const task = await Task.findById(taskId);
     if (!task) {
       return res.status(404).json({ message: "Task not found" });
