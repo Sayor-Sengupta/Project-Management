@@ -41,10 +41,10 @@ const LoginForm = () => {
   return (
     <div className="flex justify-center items-center min-h-screen">
       <form
-        className="w-[420px] bg-white/30 text-black rounded-lg p-8 backdrop-blur-3xl"
+        className="w-[420px] bg-teal-700 text-black rounded-lg p-8 backdrop-blur-3xl"
         onSubmit={handleSubmit}
       >
-        <h1 className="text-3xl text-center font-bold mb-6">Login</h1>
+        <h1 className="text-3xl text-center font-bold mb-6 text-white">Login</h1>
         <div className="relative w-full h-12 bg-gray-200 my-7 rounded-lg">
           <input
             type="text"

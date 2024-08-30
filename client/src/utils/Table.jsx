@@ -1,6 +1,9 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import {extractDateFromCreatedAt} from "../utils/extractTime"
+import { io } from "socket.io-client"; 
+
+const socket = io("http://localhost:3000");
 function Table({ projectId }) {
   const [tasks, setTasks] = useState([]);
 
@@ -16,12 +19,26 @@ function Table({ projectId }) {
      
     };
     handleChange()
+    socket.on("taskUpdated", (updatedTask) => {
+      console.log("Received task update:", updatedTask);
+      setTasks((prevTasks) =>
+        prevTasks.map((task) =>
+          task._id === updatedTask._id ? updatedTask : task
+        )
+      );
+    });
+
+    return () => {
+      socket.off("taskUpdated");
+    };
   }, [projectId]);
         // console.log(extractDateFromCreatedAt(tasks[0].dueDate));
   const handleTaskComplete= async (taskId)=>{
     try {
       await axios.post(`http://localhost:3000/api/project/setCompletedTasks/${taskId}`,{},{withCredentials: true});
+      socket.emit("taskUpdated", { _id: taskId, completed: true });
       setTasks((prevTasks)=> prevTasks.filter(task=> task._id !== taskId))
+
     } catch (error) {
       console.log(error.message);
     }

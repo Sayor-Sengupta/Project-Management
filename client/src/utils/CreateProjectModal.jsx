@@ -34,23 +34,29 @@ export const CreateProjectModals = ({ open, setOpen }) => {
         theme={{
           components: {
             Modal: {
-              /* here is your component tokens */
-              contentBg: "#006A4E ",
+           
+              contentBg: "teal",
             },
           },
         }}
       >
         <Modal
           //   title={<p >Loading Modal</p>}
+          title={
+            <p
+              className=" text-center text-2xl text-white"
+              style={{ backgroundColor: "teal" }}
+            >
+             Create Projects
+            </p>
+          }
           footer={null}
           open={open}
           onCancel={() => setOpen(false)}
           width={500}
           centered={true}
         >
-          <h1 className="w-full text-center text-4xl mt-3 text-white">
-            Create Your Project{" "}
-          </h1>
+          
           <form
             className="flex flex-col gap-2 justify-center items-center placeholder-opacity-100 opacity-50 text-white placeholder-white m-10"
             onSubmit={handleSubmit}

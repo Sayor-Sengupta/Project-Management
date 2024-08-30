@@ -18,6 +18,11 @@ io.on("connection", (socket) => {
     console.log("data", data);
     socket.broadcast.emit("messageReceived", data);
   });
+  socket.on("taskUpdated", (data) => {
+    console.log("Task updated:", data);
+    socket.broadcast.emit("taskUpdated", data);
+  });
+
   socket.on("addMembers", (projectId) => {
     io.emit("memberAdded", projectId);
   });

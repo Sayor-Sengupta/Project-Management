@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { ConfigProvider, Modal } from "antd";
 import axios from "axios";
-import {Link} from "react-router-dom";
-export const Modals = ({ open, setOpen ,  }) => {
+import { Link } from "react-router-dom";
+export const Modals = ({ open, setOpen }) => {
   const [projects, setProjects] = useState([]);
 
   useEffect(() => {
@@ -13,7 +13,7 @@ export const Modals = ({ open, setOpen ,  }) => {
           { withCredentials: true }
         );
         setProjects(res.data.projNames);
-        console.log("res.data.projNames",res.data.projNames);
+        console.log("res.data.projNames", res.data.projNames);
       } catch (error) {
         console.error("Error fetching projects:", error.message);
       }
@@ -27,26 +27,39 @@ export const Modals = ({ open, setOpen ,  }) => {
       theme={{
         components: {
           Modal: {
-            contentBg: "#006A4E",
+            contentBg: "teal",
           },
         },
       }}
     >
       <Modal
+        title={
+          <p
+            className=" text-center text-2xl text-white"
+            style={{ backgroundColor: "teal" }}
+          >
+            Joined Projects
+          </p>
+        }
         footer={null}
         open={open}
         onCancel={() => setOpen(false)}
         width={500}
         centered={true}
       >
-        <div className="h-40 flex flex-col justify-center items-center hover:cursor-pointer gap-1 text-white">
-          <h1 className="text-3xl p-2">Your Projects</h1>
+      <div className="min-h-40 flex flex-col mt-5 justify-center items-center hover:cursor-pointer gap-5 text-white">
+         
           {projects.map((project) =>
             project.groups.map((group) => (
-              <h1 key={group._id} className="text-xl hover:text-gray-500">
-               
-                <Link to={`/Project/${group._id}`}> {group.name}</Link>
-               
+              <h1 key={group._id} className="text-xl ">
+                -{" "}
+                <Link
+                  to={`/Project/${group._id}`}
+                  className="hover:text-gray-500"
+                >
+                  {" "}
+                  {group.name}
+                </Link>
               </h1>
             ))
           )}

@@ -156,9 +156,9 @@ export const getLastSixTask = async (req, res) => {
         .json({ message: "No projects found for this user" });
     }
 
-    const tasks = await Task.find({ assignedTo: userId })
+    const tasks = await Task.find({ assignedTo: userId,  completed: false })
       .sort({ createdAt: -1 })
-      .limit(6);
+      .limit(3);
     console.log("Tasks", tasks);
 
     res.status(200).json({ tasks });

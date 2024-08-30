@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import { useAuthStore } from "../zustand/useAuth";
 import { FaLock, FaUser } from "react-icons/fa";
 import { Link } from "react-router-dom";
+import toast from "react-hot-toast";
 
 const Signup = () => {
   const [fullName, setFullName] = useState("");
@@ -24,14 +25,20 @@ const Signup = () => {
       localStorage.setItem("authUser", JSON.stringify(res.data.createdUser));
       setAuthUser(res.data.createdUser);
     } catch (error) {
+      if(error.response.status === 401){
+        toast.error("Both the passwords do not match");
+
       console.log(error);
     }
-  };
+    if(error.response.status === 400){
+      toast.error("Username already exists");
+    }
+  };}
 
   return (
     <div className="flex justify-center items-center min-h-screen">
       <form
-        className="w-[420px] bg-white/30 text-black rounded-lg p-8 backdrop-blur-3xl  "
+        className="w-[420px] bg-teal-700 text-black rounded-lg p-8 backdrop-blur-3xl  "
         onSubmit={handleSubmit}
       >
         <h1 className="text-3xl text-center font-bold mb-6">Signup</h1>

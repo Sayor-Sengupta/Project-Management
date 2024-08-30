@@ -11,12 +11,10 @@ import axios from "axios";
 import { useAuthStore } from "../zustand/useAuth";
 const Topbar = () => {
   const [open, setOpen] = useState(false);
-  const [placement, setPlacement] = useState('left');
+  const [placement, setPlacement] = useState("left");
   const [modalVisible, setModalVisible] = React.useState(false);
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const { logoutUser } = useAuthStore();
-
-  
 
   const showLoading = () => {
     setModalVisible(true);
@@ -33,39 +31,36 @@ const Topbar = () => {
   //   setOpen(false);
   // };
 
-  const logout =async () => {
-try {
-      const res = await axios.post("http://localhost:3000/api/users/logout", { withCredentials: true });
+  const logout = async () => {
+    try {
+      const res = await axios.post("http://localhost:3000/api/users/logout", {
+        withCredentials: true,
+      });
       if (res.status === 200) {
         console.log("Logged out successfully");
         localStorage.removeItem("authUser");
-        logoutUser()
-       navigate("/login");
+        logoutUser();
+        navigate("/login");
       }
-  
-} catch (error) {
-  console.log("Error in logout:", error.message);
-  
-}
-
-  }
-
-
-
-
+    } catch (error) {
+      console.log("Error in logout:", error.message);
+    }
+  };
 
   return (
     <>
-
-      <div className="w-full h-14 px-5 bg-green-800 flex flex-row justify-between">
-        <div className=" flex flex-row gap-5 px-5 py-3">
-          {/* <CiMenuBurger className="h-8 w-8 hover:bg-green-700 hover:rounded-full cursor-pointer p-1 text-white" /> */}
-          <Link to='/'><FaHome className="h-8 w-8 p-1  hover:bg-green-700 hover:rounded-full text-white" /></Link>
-        </div>
-
-        <div className="mt-3 font-bold text-xl text-white">Meoww</div>
-
+      <div className="max-w-full h-20 px-5 py-3 bg-gray-800 flex flex-row justify-between ">
+        {" "}
+        <div className="mt-3 font-bold text-3xl text-white ml-10">Collaborate</div>
         <div className="flex flex-row gap-4">
+          {" "}
+          <div className=" flex flex-row gap-5 px-5 py-3">
+            {/* <CiMenuBurger className="h-8 w-8 hover:bg-green-700 hover:rounded-full cursor-pointer p-1 text-white" /> */}
+            <Link to="/">
+              {/* <FaHome className="h-8 w-8 p-1  hover:bg-green-700 hover:rounded-full text-white" /> */}
+              <h1 className="text-2xl hover:underline hover:underline-offset-8 hover:text-blue-100 text-cyan-600">Home</h1>
+            </Link>
+          </div>
           {/* <label
             className="input input-bordered h-10 flex items-center gap-2 mt-2 bg-gray-400 rounded-md bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-30 border border-white bg-transparent
 "
@@ -84,21 +79,16 @@ try {
               />
             </svg>
           </label> */}
-          <CiCirclePlus className="h-10 w-10  hover:bg-green-700 hover:rounded-full cursor-pointer my-2 text-white" onClick={showLoading} />
-          {/* <svg
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 24 24"
-            fill="currentColor"
-            className="size-10 mt-2  hover:bg-green-700 hover:rounded-full text-white"
-          >
-            <path
-              fillRule="evenodd"
-              d="M18.685 19.097A9.723 9.723 0 0 0 21.75 12c0-5.385-4.365-9.75-9.75-9.75S2.25 6.615 2.25 12a9.723 9.723 0 0 0 3.065 7.097A9.716 9.716 0 0 0 12 21.75a9.716 9.716 0 0 0 6.685-2.653Zm-12.54-1.285A7.486 7.486 0 0 1 12 15a7.486 7.486 0 0 1 5.855 2.812A8.224 8.224 0 0 1 12 20.25a8.224 8.224 0 0 1-5.855-2.438ZM15.75 9a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0Z"
-              clipRule="evenodd"
-            />
-          </svg> */}
-          <IoIosLogOut className="h-10 w-12  hover:bg-green-700 hover:rounded-full cursor-pointer my-2 text-white" onClick={logout} />
-          
+          {/* <CiCirclePlus
+            className="h-10 w-10  hover:bg-green-700 hover:rounded-full cursor-pointer my-2 text-white"
+           
+          /> */}
+          <h1  className="px-5 py-3 text-cyan-600 text-2xl hover:underline hover:underline-offset-8 hover:text-blue-100"  onClick={showLoading}>Create</h1>
+          <h1  className="px-5 py-3 text-cyan-600 text-2xl hover:underline hover:underline-offset-8 hover:text-blue-100"  onClick={logout}>Logout</h1>
+          {/* <IoIosLogOut
+            className="h-10 w-12  hover:bg-green-700 hover:rounded-full cursor-pointer my-2 text-white"
+           
+          /> */}
         </div>
       </div>
 
@@ -115,10 +105,9 @@ try {
     >
       
     </Drawer> */}
-    <CreateProjectModals open={modalVisible} setOpen={setModalVisible} />
+      <CreateProjectModals open={modalVisible} setOpen={setModalVisible} />
 
-    <Outlet/>
-
+      <Outlet />
     </>
   );
 };

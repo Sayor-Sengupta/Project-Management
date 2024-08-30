@@ -9,7 +9,7 @@ const TaskPage = () => {
 
   return (
     <>
-      <div className="mx-10 my-10 h-screen">
+      <div className="mx-10 my-10 max-h-screen ">
         <Members  projectId={projectId}/>
       </div>
     </>

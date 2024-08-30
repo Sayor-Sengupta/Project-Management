@@ -52,8 +52,8 @@ const Chat = ({ projectId, currentUser }) => {
 
   return (
     <div className="">
-      <div className="border px-2 py-2 text-center min-w-72 bg-green-800 mb-5 rounded-lg">
-        <h2 className="text-xl font-semibold text-white-800">Chat</h2>
+      <div className="border px-2 py-2 text-center min-w-72 bg-green-800 mb-5 rounded-lg ">
+        <h2 className="text-xl font-semibold text-white-800 m">Chat</h2>
       </div>
       <ChatWindow messages={messages} />
       <ChatInput onSendMessage={handleSendMessage} />

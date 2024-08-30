@@ -30,9 +30,10 @@ export const AddTaskModal = ({ open, setOpen, projectId }) => {
   return (
     <ConfigProvider
       theme={{
+        
         components: {
           Modal: {
-            contentBg: "#006A4E",
+            contentBg: "teal",
           },
         },
       }}
@@ -43,10 +44,16 @@ export const AddTaskModal = ({ open, setOpen, projectId }) => {
         onCancel={() => setOpen(false)}
         width={500}
         centered={true}
+        title={
+          <p
+            className=" text-center text-2xl text-white"
+            style={{ backgroundColor: "teal" }}
+          >
+            Joined Projects
+          </p>
+        }
       >
-        <h1 className="w-full text-center text-4xl mt-3 text-white">
-          Assign Tasks
-        </h1>
+ 
         <form
           className="flex flex-col gap-2 justify-center items-center placeholder-opacity-100 opacity-50 text-white placeholder-white m-10"
           onSubmit={handleSubmit}

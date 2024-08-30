@@ -6,7 +6,7 @@ import { AddTaskModal } from "../utils/AssignTaskModals";
 import axios from "axios";
 import { useAuthStore } from "../zustand/useAuth";
 import { CompletedTable } from "../utils/CompletedTable";
-import io from "socket.io-client"
+import io from "socket.io-client";
 const socket = io("http://localhost:3000");
 
 const Members = ({ projectId }) => {
@@ -37,14 +37,12 @@ const Members = ({ projectId }) => {
 
   useEffect(() => {
     fetchMembers();
-    socket.on("memberAdded",(projectId)=>{
-      fetchMembers()
-
-    })
-    return ()=>{
-      socket.off("memberAdded")
-    }
-
+    socket.on("memberAdded", (projectId) => {
+      fetchMembers();
+    });
+    return () => {
+      socket.off("memberAdded");
+    };
   }, [projectId]);
 
   const handleModalSuccess = () => {
@@ -61,9 +59,9 @@ const Members = ({ projectId }) => {
 
   return (
     <>
-      <div className="flex flex-row gap-12 justify-between  ">
+      <div className="flex flex-row gap-12 justify-between max-h-screen overflow-auto ">
         <div className="flex flex-col gap-2 items-center">
-          <div className="h-12 w-64 bg-green-800 border flex justify-center items-center rounded-lg">
+          <div className="h-12 w-64 bg-green-800 border flex justify-center items-center  mb-4 rounded-lg">
             <h1>Members</h1>
           </div>
 
@@ -102,7 +100,7 @@ const Members = ({ projectId }) => {
                   open={modalVisible}
                   setOpen={setModalVisible}
                   projectId={projectId}
-                  onSuccess={handleModalSuccess} // Pass the callback
+                  onSuccess={handleModalSuccess}
                 />
               </div>
             ) : null}
@@ -110,7 +108,7 @@ const Members = ({ projectId }) => {
               open={modalVisible}
               setOpen={setModalVisible}
               projectId={projectId}
-              onSuccess={handleModalSuccess} // Pass the callback
+              onSuccess={handleModalSuccess}
             />
           </div>
           <AddTaskModal
@@ -122,8 +120,8 @@ const Members = ({ projectId }) => {
 
         <Chat projectId={projectId} />
 
-        {authUser._id === creator? (
-          <div className="min-w-96 max-w-72">
+        {authUser._id === creator ? (
+          <div className="min-w-96 max-w-72 ">
             <div className="border px-2 py-2 text-center bg-green-800 rounded-lg">
               <h1>Completed Tasks</h1>
             </div>{" "}
@@ -132,8 +130,8 @@ const Members = ({ projectId }) => {
         ) : null}
 
         {authUser._id !== creator ? (
-          <div>
-            <div className="border px-2 py-2 text-center min-w-72 bg-green-800 rounded-lg ">
+          <div className="">
+            <div className="border px-2 py-2 text-center min-w-72 bg-green-800 rounded-lg  ">
               <h1>My tasks</h1>
             </div>
 

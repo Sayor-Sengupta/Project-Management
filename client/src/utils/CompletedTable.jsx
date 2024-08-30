@@ -22,7 +22,7 @@ export function CompletedTable({ projectId }) {
   },[]);
 
   return (
-    <div className="overflow-x-auto">
+    <div className="overflow-auto max-h-[500px]">
       <table className="table  ">
         <thead>
           <tr>

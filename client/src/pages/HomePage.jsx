@@ -9,7 +9,7 @@ const HomePage = () => {
         {/* <div className="mb-4">
           <Topbar />
         </div> */}
-        <div>
+        <div className="max-h-screen max-w-full">
           <MiddleSection/>
         </div>
       </div>

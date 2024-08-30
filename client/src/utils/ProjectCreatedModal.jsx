@@ -25,12 +25,20 @@ export const ProjectCreatedModal = ({ open, setOpen ,  }) => {
       theme={{
         components: {
           Modal: {
-            contentBg: "#006A4E",
+            contentBg: "teal",
           },
         },
       }}
     >
       <Modal
+              title={
+                <p
+                  className=" text-center text-2xl text-white"
+                  style={{ backgroundColor: "teal" }}
+                >
+                   Created Projects
+                </p>
+              }
         footer={null}
         open={open}
         onCancel={() => setOpen(false)}
@@ -38,7 +46,7 @@ export const ProjectCreatedModal = ({ open, setOpen ,  }) => {
         centered={true}
       >
         <div className="h-40 flex flex-col justify-center items-center hover:cursor-pointer gap-1 text-white">
-          <h1 className="text-3xl p-2">Your Projects</h1>
+        
             {
 
                 projects.map((project) =>                

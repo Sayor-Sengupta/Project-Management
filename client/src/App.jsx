@@ -13,7 +13,7 @@ function App() {
   const { authUser } = useAuthStore();
 
   return (
-    <>
+    <div className="min-h-screen ">
       <Routes>
         <Route
           path="/login"
@@ -35,7 +35,7 @@ function App() {
         {!authUser && <Route path="" element={<Navigate to="/login" />} />}
       </Routes>
       <Toaster />
-    </>
+    </div>
   );
 }
 
