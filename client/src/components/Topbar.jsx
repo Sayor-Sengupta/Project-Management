@@ -51,7 +51,7 @@ const Topbar = () => {
     <>
       <div className="max-w-full h-20 px-5 py-3 bg-gray-800 flex flex-row justify-between ">
         {" "}
-        <div className="mt-3 font-bold text-3xl text-white ml-10">Collaborate</div>
+        <div className="mt-3 font-bold text-3xl text-white ml-10">ProjectFlow</div>
         <div className="flex flex-row gap-4">
           {" "}
           <div className=" flex flex-row gap-5 px-5 py-3">
