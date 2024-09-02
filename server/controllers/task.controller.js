@@ -37,19 +37,31 @@ export const createProject = async (req, res) => {
 export const addMembers = async (req, res) => {
   try {
     const projectId = req.params.id;
-
     const userId = req.user.id;
-    console.log("projId", projectId);
     const { userName } = req.body;
+    
 
     const user = await User.findOne({ userName });
 
-    if (!user) {
-      return res.status(404).json({ message: "User not found" });
-    }
-    const project1 = await Project.findById(projectId);
+    // if (!user) {
+    //   return res.status(404).json({ message: "User not found" });
+    // }
 
-    if (project1.members.includes(user._id)) {
+    const project = await Project.findById(projectId);
+    console.log(project.createdBy);
+
+    if (!project) {
+      return res.status(404).json({ message: "Project not found" });
+    }
+    
+    if (project.createdBy.toString() === userId) {
+      return res
+        .status(400)
+        .json({ message: "You cannot add yourself as a member" });
+    }
+
+    if (project.members.includes(user._id)) {
+      
       return res
         .status(400)
         .json({
@@ -57,16 +69,12 @@ export const addMembers = async (req, res) => {
         });
     }
 
-    console.log(user);
-
-    const project = await Project.findByIdAndUpdate(
+    const updatedProject = await Project.findByIdAndUpdate(
       projectId,
       { $addToSet: { members: user._id } },
       { new: true }
     ).populate("members", "userName");
-    if (!project) {
-      return res.status(404).json({ message: "Project not found" });
-    }
+
     await User.findByIdAndUpdate(
       user._id,
       { $push: { groups: projectId } },
@@ -75,11 +83,13 @@ export const addMembers = async (req, res) => {
 
     res
       .status(200)
-      .json({ message: `User ${userName} added to the project`, project });
+      .json({ message: `User ${userName} added to the project`, project: updatedProject });
   } catch (err) {
+    console.log(err.message);
     res.status(400).json({ error: err.message });
   }
 };
+
 const deleteProject = async (req, res) => {};
 
 export const assignTask = async (req, res) => {
