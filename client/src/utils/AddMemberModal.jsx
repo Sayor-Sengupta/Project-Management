@@ -31,7 +31,7 @@ export const AddMemberModal = ({ open, setOpen, projectId, onSuccess }) => {
         theme={{
           components: {
             Modal: {
-              /* here is your component tokens */
+        
               contentBg: "teal",
             },
           },

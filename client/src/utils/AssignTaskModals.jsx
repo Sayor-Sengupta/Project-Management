@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { ConfigProvider, Modal } from "antd";
 import axios from "axios";
+import toast from "react-hot-toast";
 
 export const AddTaskModal = ({ open, setOpen, projectId }) => {
   const [title, setTitle] = useState("");
@@ -21,7 +22,7 @@ export const AddTaskModal = ({ open, setOpen, projectId }) => {
       console.log("res", res);
     } catch (error) {
       if (error.response.status === 404) {
-        alert("User not found");
+        toast.error("user not found");
         setOpen(false);
       }
     }
