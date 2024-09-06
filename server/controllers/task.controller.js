@@ -54,11 +54,11 @@ export const addMembers = async (req, res) => {
       return res.status(404).json({ message: "Project not found" });
     }
     
-    if (project.createdBy.toString() === userId) {
-      return res
-        .status(400)
-        .json({ message: "You cannot add yourself as a member" });
-    }
+    // if (project.createdBy.toString() === userId) {
+    //   return res
+    //     .status(400)
+    //     .json({ message: "You cannot add yourself as a member" });
+    // }
 
     if (project.members.includes(user._id)) {
       
